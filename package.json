@@ -1,0 +1,31 @@
+{
+  "name": "@victor-software-house/pi-auto-rename",
+  "version": "0.1.0",
+  "description": "Auto-rename pi sessions with AI via a single /rename command",
+  "type": "module",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "pi-coding-agent",
+    "extension",
+    "session",
+    "rename"
+  ],
+  "license": "MIT",
+  "files": [
+    "index.ts",
+    "utils.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-coding-agent": "*",
+    "@mariozechner/pi-ai": "*",
+    "@mariozechner/pi-tui": "*"
+  }
+}
