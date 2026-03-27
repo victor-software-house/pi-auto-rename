@@ -12,7 +12,7 @@ import {
 } from "@mariozechner/pi-coding-agent";
 import {
 	Container,
-	getEditorKeybindings,
+	getKeybindings,
 	Input,
 	type AutocompleteItem,
 	type SelectItem,
@@ -135,7 +135,7 @@ async function openModelPicker(ctx: ExtensionCommandContext, current: ModelRef):
 	}
 
 	return ctx.ui.custom<ModelRef | null>((tui, theme, _kb, done) => {
-		const kb = getEditorKeybindings();
+		const kb = getKeybindings();
 		const currentLabel = formatRef(current);
 		const root = new Container();
 		root.addChild(new DynamicBorder((s) => theme.fg("accent", s)));
