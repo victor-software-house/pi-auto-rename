@@ -2,7 +2,16 @@
   "name": "@victor-software-house/pi-auto-rename",
   "version": "0.1.0",
   "description": "Auto-rename pi sessions with AI via a single /rename command",
-  "type": "module",
+  "license": "MIT",
+  "author": "Victor Software House",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/victor-software-house/pi-auto-rename.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "keywords": [
     "pi-package",
     "pi",
@@ -11,21 +20,31 @@
     "session",
     "rename"
   ],
-  "license": "MIT",
+  "type": "module",
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
   "files": [
     "index.ts",
     "utils.ts",
     "README.md",
     "LICENSE"
   ],
-  "pi": {
-    "extensions": [
-      "./index.ts"
-    ]
-  },
   "peerDependencies": {
-    "@mariozechner/pi-coding-agent": "*",
     "@mariozechner/pi-ai": "*",
+    "@mariozechner/pi-coding-agent": "*",
     "@mariozechner/pi-tui": "*"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "12",
+    "@semantic-release/npm": "^13.0.0",
+    "lefthook": "^1.13.6",
+    "semantic-release": "^25.0.0"
   }
 }
