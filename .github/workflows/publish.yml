@@ -37,6 +37,15 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Typecheck
+        run: bun run typecheck
+
+      - name: Lint (Biome)
+        run: bun run lint:biome
+
+      - name: Lint (oxlint)
+        run: bun run lint:oxlint
+
       - name: Verify package contents
         run: npm pack --dry-run
 

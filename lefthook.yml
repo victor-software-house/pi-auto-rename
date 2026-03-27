@@ -10,5 +10,17 @@ commit-msg:
 pre-commit:
   parallel: false
   commands:
+    format:
+      stage_fixed: true
+      run: |
+        output="$(bunx biome check --write {staged_files} 2>&1)"
+        status=$?
+        printf "%s\n" "$output"
+        if [ $status -ne 0 ] && printf "%s" "$output" | grep -q "No files were processed"; then
+          exit 0
+        fi
+        exit $status
+    lint:
+      run: bun run lint
     lint-types:
       run: bun run typecheck

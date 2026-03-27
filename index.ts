@@ -1,25 +1,29 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import type { Model, Api, TextContent } from "@mariozechner/pi-ai";
+import type { Api, Model, TextContent } from "@mariozechner/pi-ai";
 import { complete } from "@mariozechner/pi-ai";
 import {
-	DynamicBorder,
 	type CustomEntry,
+	DynamicBorder,
 	type ExtensionAPI,
-	type ExtensionContext,
 	type ExtensionCommandContext,
+	type ExtensionContext,
 } from "@mariozechner/pi-coding-agent";
 import {
+	type AutocompleteItem,
 	Container,
 	getKeybindings,
 	Input,
-	type AutocompleteItem,
 	type SelectItem,
 	SelectList,
 	Text,
 } from "@mariozechner/pi-tui";
-import { getConversationTranscript, getFirstUserMessageText, sanitizeSessionName } from "./utils.ts";
+import {
+	getConversationTranscript,
+	getFirstUserMessageText,
+	sanitizeSessionName,
+} from "./utils.ts";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -111,7 +115,11 @@ async function resolveAuth(
 	}
 	const auth = await ctx.modelRegistry.getApiKeyAndHeaders(model);
 	if (!auth.ok) {
-		notify(ctx, `No auth for ${ref.provider}: ${auth.error}. Configure via /login or models.json.`, "warning");
+		notify(
+			ctx,
+			`No auth for ${ref.provider}: ${auth.error}. Configure via /login or models.json.`,
+			"warning",
+		);
 		return null;
 	}
 	return { model, apiKey: auth.apiKey, headers: auth.headers };
@@ -119,7 +127,10 @@ async function resolveAuth(
 
 // ─── Model picker ─────────────────────────────────────────────────────────────
 
-async function openModelPicker(ctx: ExtensionCommandContext, current: ModelRef): Promise<ModelRef | null> {
+async function openModelPicker(
+	ctx: ExtensionCommandContext,
+	current: ModelRef,
+): Promise<ModelRef | null> {
 	const available = ctx.modelRegistry
 		.getAvailable()
 		.map((m): ModelRef => ({ provider: m.provider, id: m.id }))
@@ -152,7 +163,9 @@ async function openModelPicker(ctx: ExtensionCommandContext, current: ModelRef):
 		const toItems = (q: string): SelectItem[] => {
 			const lq = q.toLowerCase();
 			return available
-				.filter((m) => !lq || formatRef(m).toLowerCase().includes(lq) || m.id.toLowerCase().includes(lq))
+				.filter(
+					(m) => !lq || formatRef(m).toLowerCase().includes(lq) || m.id.toLowerCase().includes(lq),
+				)
 				.map((m) => ({ value: formatRef(m), label: m.id, description: m.provider }));
 		};
 
@@ -170,7 +183,9 @@ async function openModelPicker(ctx: ExtensionCommandContext, current: ModelRef):
 			});
 			next.onSelect = (item) => done(parseRef(item.value));
 			next.onCancel = () => done(null);
-			next.onSelectionChange = (item) => { lastValue = item.value; };
+			next.onSelectionChange = (item) => {
+				lastValue = item.value;
+			};
 			const idx = lastValue ? items.findIndex((i) => i.value === lastValue) : -1;
 			if (idx >= 0) next.setSelectedIndex(idx);
 			list = next;
@@ -179,7 +194,9 @@ async function openModelPicker(ctx: ExtensionCommandContext, current: ModelRef):
 		};
 
 		rebuild();
-		root.addChild(new Text(theme.fg("dim", "type to search | up/down navigate | enter select | esc cancel")));
+		root.addChild(
+			new Text(theme.fg("dim", "type to search | up/down navigate | enter select | esc cancel")),
+		);
 		root.addChild(new DynamicBorder((s) => theme.fg("accent", s)));
 
 		return {
@@ -211,14 +228,21 @@ function notify(ctx: ExtensionContext, msg: string, level: "info" | "warning" | 
 	if (ctx.hasUI) ctx.ui.notify(msg, level);
 }
 
-async function generateName(ctx: ExtensionContext, ref: ModelRef, instruction: string, content: string): Promise<string | null> {
+async function generateName(
+	ctx: ExtensionContext,
+	ref: ModelRef,
+	instruction: string,
+	content: string,
+): Promise<string | null> {
 	const resolved = await resolveAuth(ctx, ref);
 	if (!resolved) return null;
 
 	try {
 		const prompt = {
 			role: "user" as const,
-			content: [{ type: "text" as const, text: `${instruction}\n\n${content}` }] satisfies TextContent[],
+			content: [
+				{ type: "text" as const, text: `${instruction}\n\n${content}` },
+			] satisfies TextContent[],
 			timestamp: Date.now(),
 		};
 		const response = await complete(
@@ -265,7 +289,9 @@ export default function piAutoRename(pi: ExtensionAPI) {
 	}
 
 	function refreshModelCache(ctx: ExtensionContext): void {
-		cachedModels = ctx.modelRegistry.getAvailable().map((m): ModelRef => ({ provider: m.provider, id: m.id }));
+		cachedModels = ctx.modelRegistry
+			.getAvailable()
+			.map((m): ModelRef => ({ provider: m.provider, id: m.id }));
 	}
 
 	function resetNaming(): void {
@@ -313,7 +339,10 @@ export default function piAutoRename(pi: ExtensionAPI) {
 				return hits.length > 0 ? hits.map((value) => ({ value, label: value })) : null;
 			}
 
-			const [sub, rest] = [trimmed.slice(0, trimmed.indexOf(" ")), trimmed.slice(trimmed.indexOf(" ") + 1)];
+			const [sub, rest] = [
+				trimmed.slice(0, trimmed.indexOf(" ")),
+				trimmed.slice(trimmed.indexOf(" ") + 1),
+			];
 			if (sub !== "model") return null;
 
 			const refs = cachedModels.map(formatRef).filter((r) => r.startsWith(rest));
@@ -367,7 +396,11 @@ export default function piAutoRename(pi: ExtensionAPI) {
 					const picked = await openModelPicker(ctx, modelRef);
 					if (!picked) return;
 					const ok = persist(picked);
-					notify(ctx, `Rename model set to ${formatRef(picked)}${ok ? "" : " (persist failed)"}`, ok ? "info" : "warning");
+					notify(
+						ctx,
+						`Rename model set to ${formatRef(picked)}${ok ? "" : " (persist failed)"}`,
+						ok ? "info" : "warning",
+					);
 					return;
 				}
 
@@ -380,7 +413,11 @@ export default function piAutoRename(pi: ExtensionAPI) {
 				const resolved = await resolveAuth(ctx, ref);
 				if (!resolved) return;
 				const ok = persist(ref);
-				notify(ctx, `Rename model set to ${formatRef(ref)}${ok ? "" : " (persist failed)"}`, ok ? "info" : "warning");
+				notify(
+					ctx,
+					`Rename model set to ${formatRef(ref)}${ok ? "" : " (persist failed)"}`,
+					ok ? "info" : "warning",
+				);
 				return;
 			}
 
@@ -399,6 +436,10 @@ export default function piAutoRename(pi: ExtensionAPI) {
 	pi.on("session_switch", onSessionEvent);
 	pi.on("session_fork", onSessionEvent);
 
-	pi.on("message_end", async (_event, ctx) => { await autoName(ctx); });
-	pi.on("agent_end", async (_event, ctx) => { await autoName(ctx); });
+	pi.on("message_end", async (_event, ctx) => {
+		await autoName(ctx);
+	});
+	pi.on("agent_end", async (_event, ctx) => {
+		await autoName(ctx);
+	});
 }

@@ -1,0 +1,94 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.9/schema.json",
+	"root": true,
+	"files": {
+		"includes": ["*.ts"]
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"noExplicitAny": "error",
+				"noImplicitAnyLet": "error",
+				"noConfusingVoidType": {
+					"level": "error",
+					"fix": "none"
+				},
+				"noDeprecatedImports": "error"
+			},
+			"style": {
+				"useImportType": "error",
+				"useNodejsImportProtocol": "error",
+				"useConsistentBuiltinInstantiation": {
+					"level": "error",
+					"fix": "safe"
+				},
+				"useExplicitLengthCheck": {
+					"level": "error",
+					"fix": "safe"
+				},
+				"useConsistentArrayType": {
+					"level": "error",
+					"options": {
+						"syntax": "shorthand"
+					}
+				},
+				"useThrowOnlyError": "error",
+				"noEnum": "error"
+			},
+			"correctness": {
+				"noUnusedImports": {
+					"level": "error",
+					"fix": "safe"
+				},
+				"noUnusedVariables": {
+					"level": "error",
+					"fix": "none"
+				},
+				"noUnusedFunctionParameters": {
+					"level": "error",
+					"fix": "safe"
+				},
+				"noUndeclaredVariables": "error"
+			},
+			"performance": {
+				"noDelete": "error",
+				"noDynamicNamespaceImportAccess": "error"
+			},
+			"complexity": {
+				"noForEach": "error",
+				"noUselessTypeConstraint": "error",
+				"useLiteralKeys": "off"
+			},
+			"nursery": {
+				"noFloatingPromises": "error",
+				"noUnnecessaryConditions": "error"
+			}
+		}
+	},
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab",
+		"lineWidth": 100
+	},
+	"javascript": {
+		"globals": ["Bun"],
+		"formatter": {
+			"quoteStyle": "double",
+			"semicolons": "always"
+		}
+	},
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"useIgnoreFile": true
+	}
+}
