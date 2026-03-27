@@ -5,6 +5,12 @@ Pi extension that auto-renames sessions using AI. Provides a single `/rename` co
 ## Install
 
 ```bash
+pi install npm:pi-auto-rename
+```
+
+Or from git:
+
+```bash
 pi install git:github.com/victor-software-house/pi-auto-rename
 ```
 
