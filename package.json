@@ -1,5 +1,5 @@
 {
-  "name": "@victor-software-house/pi-auto-rename",
+  "name": "pi-auto-rename",
   "version": "0.1.0",
   "description": "Auto-rename pi sessions with AI via a single /rename command",
   "license": "MIT",
