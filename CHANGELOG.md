@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/victor-software-house/pi-auto-rename/compare/v0.1.3...v0.1.4) (2026-03-27)
+
+
+### Bug Fixes
+
+* add biome + oxlint linting with pre-commit hooks and CI checks ([61810e3](https://github.com/victor-software-house/pi-auto-rename/commit/61810e340ddc49d9df464b5cd7a6363ba8432cf1))
+
 ## [0.1.3](https://github.com/victor-software-house/pi-auto-rename/compare/v0.1.2...v0.1.3) (2026-03-27)
 
 
