@@ -187,10 +187,10 @@ async function openModelPicker(ctx: ExtensionCommandContext, current: ModelRef):
 			invalidate: () => root.invalidate(),
 			handleInput: (data: string) => {
 				const isNav =
-					kb.matches(data, "selectUp") ||
-					kb.matches(data, "selectDown") ||
-					kb.matches(data, "selectConfirm") ||
-					kb.matches(data, "selectCancel");
+					kb.matches(data, "tui.select.up") ||
+					kb.matches(data, "tui.select.down") ||
+					kb.matches(data, "tui.select.confirm") ||
+					kb.matches(data, "tui.select.cancel");
 				if (isNav) {
 					list.handleInput(data);
 					const sel = list.getSelectedItem();

@@ -1,19 +1,21 @@
-import type { TextContent, ImageContent } from "@mariozechner/pi-ai";
+import type { Message, TextContent } from "@mariozechner/pi-ai";
 import type { SessionEntry, SessionMessageEntry } from "@mariozechner/pi-coding-agent";
 
 const NAME_LENGTH_CAP = 80;
 
 // ─── Content extraction ───────────────────────────────────────────────────────
 
-function isMessageEntry(entry: SessionEntry): entry is SessionMessageEntry {
-	return entry.type === "message";
+function isLlmMessage(entry: SessionEntry): entry is SessionMessageEntry & { message: Message } {
+	if (entry.type !== "message") return false;
+	const role = (entry as SessionMessageEntry).message.role;
+	return role === "user" || role === "assistant" || role === "toolResult";
 }
 
-function extractText(content: string | (TextContent | ImageContent)[]): string {
+function extractText(content: Message["content"]): string {
 	if (typeof content === "string") return content;
 	const parts: string[] = [];
 	for (const block of content) {
-		if (block.type === "text") parts.push(block.text);
+		if (block.type === "text") parts.push((block as TextContent).text);
 	}
 	return parts.join("\n");
 }
@@ -27,7 +29,7 @@ function extractText(content: string | (TextContent | ImageContent)[]): string {
 export function getFirstUserMessageText(entries: SessionEntry[]): string | null {
 	for (let i = entries.length - 1; i >= 0; i--) {
 		const entry = entries[i];
-		if (!isMessageEntry(entry)) continue;
+		if (!entry || !isLlmMessage(entry)) continue;
 		if (entry.message.role !== "user") continue;
 		const text = extractText(entry.message.content).trim();
 		if (text) return text;
@@ -42,7 +44,7 @@ export function getConversationTranscript(entries: SessionEntry[]): string {
 	const segments: string[] = [];
 	for (let i = entries.length - 1; i >= 0; i--) {
 		const entry = entries[i];
-		if (!isMessageEntry(entry)) continue;
+		if (!entry || !isLlmMessage(entry)) continue;
 		const { role, content } = entry.message;
 		if (role !== "user" && role !== "assistant") continue;
 		const text = extractText(content).trim();
