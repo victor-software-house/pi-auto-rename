@@ -34,16 +34,17 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "lint": "bun run lint:biome && bun run lint:oxlint",
+    "lint": "pnpm run lint:biome && pnpm run lint:oxlint",
     "lint:biome": "biome check .",
     "lint:oxlint": "oxlint --import-plugin --type-aware --tsconfig=./tsconfig.json .",
     "lint:fix": "biome check --write .",
-    "format": "biome format --write ."
+    "format": "biome format --write .",
+    "prepublishOnly": "pnpm run typecheck"
   },
   "peerDependencies": {
-    "@mariozechner/pi-ai": "^0.63.1",
-    "@mariozechner/pi-coding-agent": "^0.63.1",
-    "@mariozechner/pi-tui": "^0.63.1"
+    "@earendil-works/pi-ai": ">=0.74.0",
+    "@earendil-works/pi-coding-agent": ">=0.74.0",
+    "@earendil-works/pi-tui": ">=0.74.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.9",
@@ -59,5 +60,9 @@
     "oxlint-tsgolint": "^0.18.0",
     "semantic-release": "^25.0.0",
     "typescript": "^6.0.2"
+  },
+  "packageManager": "pnpm@11.1.1",
+  "engines": {
+    "node": ">=24.0.0"
   }
 }
