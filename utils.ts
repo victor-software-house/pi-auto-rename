@@ -1,5 +1,5 @@
-import type { Message, TextContent } from "@mariozechner/pi-ai";
-import type { SessionEntry, SessionMessageEntry } from "@mariozechner/pi-coding-agent";
+import type { Message, TextContent } from "@earendil-works/pi-ai";
+import type { SessionEntry, SessionMessageEntry } from "@earendil-works/pi-coding-agent";
 
 const NAME_LENGTH_CAP = 80;
 

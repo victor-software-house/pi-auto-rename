@@ -1,15 +1,15 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import type { Api, Model, TextContent } from "@mariozechner/pi-ai";
-import { complete } from "@mariozechner/pi-ai";
+import type { Api, Model, TextContent } from "@earendil-works/pi-ai";
+import { complete } from "@earendil-works/pi-ai";
 import {
 	type CustomEntry,
 	DynamicBorder,
 	type ExtensionAPI,
 	type ExtensionCommandContext,
 	type ExtensionContext,
-} from "@mariozechner/pi-coding-agent";
+} from "@earendil-works/pi-coding-agent";
 import {
 	type AutocompleteItem,
 	Container,
@@ -18,7 +18,7 @@ import {
 	type SelectItem,
 	SelectList,
 	Text,
-} from "@mariozechner/pi-tui";
+} from "@earendil-works/pi-tui";
 import {
 	getConversationTranscript,
 	getFirstUserMessageText,
@@ -433,8 +433,6 @@ export default function piAutoRename(pi: ExtensionAPI) {
 	});
 
 	pi.on("session_tree", onSessionEvent);
-	pi.on("session_switch", onSessionEvent);
-	pi.on("session_fork", onSessionEvent);
 
 	pi.on("message_end", async (_event, ctx) => {
 		await autoName(ctx);
